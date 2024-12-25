@@ -74,7 +74,7 @@ const Register = () => {
                 <div className="row w-100">
                     <div className="col-md-6 d-none d-md-block">
                         <img
-                            src="https://i.pinimg.com/736x/d3/42/dd/d342dd4f3ac0c2a88d4be645b0c5f1ca.jpg"
+                            src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg"
                             alt="Sign Up Illustration"
                             className="img-fluid"
                         />
@@ -98,7 +98,7 @@ const Register = () => {
                                     {errors.name && <div className="text-danger">{errors.name}</div>}
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email or Phone Number</label>
+                                    <label htmlFor="email" className="form-label">Email</label>
                                     <input
                                         type="email"
                                         id="email"
