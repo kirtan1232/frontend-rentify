@@ -62,7 +62,7 @@ const Login = () => {
         <div className="login-page">
             <div className="logo-container">
                 <img
-                    src={require('../../assets/logo/logo.png')} // Adjust the path based on your project structure
+                    src={require('../../assets/icons/logo.png')} // Adjust the path based on your project structure
                     alt="Logo"
                     className="logo"
                 />

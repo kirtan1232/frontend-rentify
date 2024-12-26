@@ -71,7 +71,7 @@ const Register = () => {
         <div className="signup-page">
             <div className="logo-container">
                 <img
-                    src={require('../../assets/logo/logo.png')} // Adjust the path based on your project structure
+                    src={require('../../assets/icons/logo.png')} // Adjust the path based on your project structure
                     alt="Rentify Logo"
                     className="logo"
                 />
