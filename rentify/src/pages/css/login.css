@@ -1,47 +1,52 @@
-/* Full page background image for the Login Page */
+/* Page-level styles */
 .login-page {
-    background-color: #f8f9fa;
-    /* Light background for the entire page */
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    /* Add some padding to avoid edges being too close */
+    @apply min-h-screen flex items-center justify-center bg-gradient-to-b from-green-100 to-white px-5 relative;
 }
 
-/* Form container styling */
-.off-white-container {
-    background-color: rgba(255, 255, 255, 0.85);
-    /* Slight transparency to allow background image */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+/* Logo container - Position the logo at the top-left */
+.logo-container {
+    @apply absolute top-5 left-5 z-10;
 }
 
-h3 {
-    font-family: 'Playfair Display', serif;
+.logo {
+    @apply w-32 h-auto; /* Adjust logo size to be larger */
 }
 
-.form-control {
-    border-radius: 5px;
+/* Form container */
+.login-container {
+    @apply bg-white bg-opacity-90 rounded-md p-8 shadow-lg max-w-md w-full;
 }
 
-button {
-    border-radius: 5px;
+/* Heading styles */
+.login-heading {
+    @apply text-2xl font-serif font-semibold text-center mb-4;
 }
 
-.text-danger {
-    font-size: 0.9rem;
+/* Input field styles */
+.input-field {
+    @apply block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
+/* Error text styles */
+.error-text {
+    @apply text-red-500 text-xs;
 }
 
-a:hover {
-    text-decoration: underline;
+/* Button styles */
+.submit-button {
+    @apply w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+/* Link styles */
+.link {
+    @apply text-indigo-600 hover:underline;
+}
+
+/* Image container for login illustration */
+.image-container {
+    @apply flex justify-center items-center mb-4;
+}
+
+.login-image {
+    @apply w-full h-auto rounded-lg shadow-md;
 }

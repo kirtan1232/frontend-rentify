@@ -1,8 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { loginUserApi } from '../../api/Api'; // Import your API utility
-import '../css/login.css';
-
+import '../css/login.css'; // Import the custom CSS file
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -52,6 +50,7 @@ const Login = () => {
                     window.location.href = '/';
                 }
             } catch (error) {
+                console.error('Error during login:', error);
                 const errorMsg = error.response?.data?.message || 'Login failed! Please try again.';
                 setErrorMessage(errorMsg);
                 setFormSubmitted(false);
@@ -61,52 +60,65 @@ const Login = () => {
 
     return (
         <div className="login-page">
-            <div className="container d-flex justify-content-center align-items-center vh-100">
-                <div className="row w-100">
-                    <div className="col-md-6 d-none d-md-block">
-                        <img
-                            src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg"
-                            alt="Login Illustration"
-                            className="img-fluid"
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <div className="off-white-container">
-                            <h3 className="text-center mb-4">Login</h3>
-                            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                            <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="form-control"
-                                        placeholder="Enter your email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.email && <div className="text-danger">{errors.email}</div>}
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        className="form-control"
-                                        placeholder="Enter your password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.password && <div className="text-danger">{errors.password}</div>}
-                                </div>
-                                <button type="submit" className="btn btn-primary w-100">Login</button>
-                            </form>
-                            <p className="text-center mt-3">
-                                Don't have an account? <a href="/register">Register</a>
-                            </p>
-                        </div>
-                    </div>
+            <div className="logo-container">
+                <img
+                    src={require('../../assets/logo/logo.png')} // Adjust the path based on your project structure
+                    alt="Logo"
+                    className="logo"
+                />
+            </div>
+            <div className="login-container">
+                {/* Add the image element here */}
+                <div className="image-container">
+                    <img
+                        src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg" // Update the URL with your image location
+                        alt="Login Illustration"
+                        className="login-image"
+                    />
                 </div>
+                <h3 className="login-heading">Login</h3>
+                {errorMessage && (
+                    <div className="mb-4 text-red-600 bg-red-100 p-3 rounded">{errorMessage}</div>
+                )}
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            className="input-field"
+                            placeholder="Enter your email"
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
+                        {errors.email && <div className="error-text">{errors.email}</div>}
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            className="input-field"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        {errors.password && <div className="error-text">{errors.password}</div>}
+                    </div>
+                    <button type="submit" className="submit-button">
+                        Login
+                    </button>
+                </form>
+                <p className="text-center mt-4 text-sm">
+                    Don't have an account?{' '}
+                    <a href="/register" className="link">
+                        Register
+                    </a>
+                </p>
             </div>
         </div>
     );

@@ -1,7 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { registerUserApi } from '../../api/Api'; // Import your API utility
-import '../css/register.css';
+import '../css/signup.css'; // Import the custom CSS file
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -70,76 +69,74 @@ const Register = () => {
 
     return (
         <div className="signup-page">
-            <div className="container d-flex justify-content-center align-items-center vh-100">
-                <div className="row w-100">
-                    <div className="col-md-6 d-none d-md-block">
-                        <img
-                            src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg"
-                            alt="Sign Up Illustration"
-                            className="img-fluid"
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <div className="off-white-container">
-                            <h3 className="text-center mb-4">Create an account</h3>
-                            {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                            <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label htmlFor="name" className="form-label">Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        className="form-control"
-                                        placeholder="Enter your name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.name && <div className="text-danger">{errors.name}</div>}
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="form-control"
-                                        placeholder="Enter your email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.email && <div className="text-danger">{errors.email}</div>}
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        className="form-control"
-                                        placeholder="Enter your password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.password && <div className="text-danger">{errors.password}</div>}
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="confirm-password" className="form-label">Re-type Password</label>
-                                    <input
-                                        type="password"
-                                        id="confirmPassword"
-                                        className="form-control"
-                                        placeholder="Re-type password"
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                    />
-                                    {errors.confirmPassword && <div className="text-danger">{errors.confirmPassword}</div>}
-                                </div>
-                                <button type="submit" className="btn btn-primary w-100">Create Account</button>
-                            </form>
-                            <p className="text-center mt-3">
-                                Already have an account? <a href="/login">Login</a>
-                            </p>
+            <div className="logo-container">
+                <img
+                    src={require('../../assets/logo/logo.png')} // Adjust the path based on your project structure
+                    alt="Rentify Logo"
+                    className="logo"
+                />
+            </div>
+            <div className="signup-container">
+                <div className="signup-image">
+                    <img
+                        src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg"
+                        alt="Sign Up Illustration"
+                    />
+                </div>
+                <div className="signup-form">
+                    <h3 className="signup-heading">Create an account</h3>
+                    {successMessage && <div className="success-message">{successMessage}</div>}
+                    {errorMessage && <div className="error-message">{errorMessage}</div>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="name">Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="Enter your name"
+                                value={formData.name}
+                                onChange={handleChange}
+                            />
+                            {errors.name && <div className="error-text">{errors.name}</div>}
                         </div>
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="Enter your email"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                            {errors.email && <div className="error-text">{errors.email}</div>}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Enter your password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                            {errors.password && <div className="error-text">{errors.password}</div>}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="confirmPassword">Re-type Password</label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Re-type password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                            />
+                            {errors.confirmPassword && <div className="error-text">{errors.confirmPassword}</div>}
+                        </div>
+                        <button type="submit" className="submit-button">Create Account</button>
+                    </form>
+                    <p className="text-center">
+                        Already have an account? <a href="/login" className="link">Login</a>
+                    </p>
                 </div>
             </div>
         </div>
