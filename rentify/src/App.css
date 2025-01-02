@@ -1,5 +1,7 @@
+
 .App {
   text-align: center;
+  background-color: white;
 }
 
 .App-logo {
@@ -32,8 +34,24 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Main content wrapper */
+.main-content {
+  margin-left: 100px;  /* Apply left margin */
+  margin-right: 100px; /* Apply right margin */
+  padding-top: 20px;   /* Optional: Adjust top padding if needed */
+  padding-bottom: 20px;/* Optional: Adjust bottom padding if needed */
+  margin-top: 20px;
+}
+
+/* For larger screens, you can increase the margin if needed */
+@media (min-width: 1200px) {
+  .main-content {
+    margin-left: 200px;  /* Apply larger left margin */
+    margin-right: 200px; /* Apply larger right margin */
   }
 }

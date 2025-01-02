@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import { registerUserApi } from '../../api/Api'; // Import your API utility
 import '../css/signup.css'; // Import the custom CSS file
 
@@ -11,8 +13,6 @@ const Register = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         setFormData({
@@ -50,8 +50,7 @@ const Register = () => {
                 const response = await registerUserApi(formData);
 
                 if (response.data.success) {
-                    setSuccessMessage('User registered successfully!');
-                    setErrorMessage('');
+                    toast.success('User registered successfully!'); // Show success toast
                     setFormData({
                         name: '',
                         email: '',
@@ -61,8 +60,7 @@ const Register = () => {
                 }
             } catch (error) {
                 const errorMsg = error.response?.data?.message || 'Something went wrong!';
-                setErrorMessage(errorMsg);
-                setSuccessMessage('');
+                toast.error(errorMsg); // Show error toast
             }
         }
     };
@@ -85,8 +83,6 @@ const Register = () => {
                 </div>
                 <div className="signup-form">
                     <h3 className="signup-heading">Create an account</h3>
-                    {successMessage && <div className="success-message">{successMessage}</div>}
-                    {errorMessage && <div className="error-message">{errorMessage}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="name">Name</label>

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import { loginUserApi } from '../../api/Api'; // Import your API utility
 import '../css/login.css'; // Import the custom CSS file
 
@@ -11,6 +14,8 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
@@ -44,16 +49,19 @@ const Login = () => {
                 if (response.data.success) {
                     setFormSubmitted(true);
                     setErrorMessage('');
-                    alert('Login successful');
+                    toast.success('Login successful!'); // Show success toast
                     // Store token and redirect to the dashboard or desired page
                     localStorage.setItem('token', response.data.token);
-                    window.location.href = '/';
+                    const convertedData = JSON.stringify(response.data.userData);
+                    localStorage.setItem('user', convertedData);
+                    navigate('/');
                 }
             } catch (error) {
                 console.error('Error during login:', error);
                 const errorMsg = error.response?.data?.message || 'Login failed! Please try again.';
                 setErrorMessage(errorMsg);
                 setFormSubmitted(false);
+                toast.error(errorMsg); // Show error toast
             }
         }
     };
