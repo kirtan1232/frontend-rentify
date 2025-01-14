@@ -67,17 +67,17 @@ const Register = () => {
 
     return (
         <div className="signup-page">
-            <div className="logo-container">
+            {/* <div className="logo-container">
                 <img
                     src={require('../../assets/icons/logo.png')} // Adjust the path based on your project structure
                     alt="Rentify Logo"
                     className="logo"
                 />
-            </div>
+            </div> */}
             <div className="signup-container">
                 <div className="signup-image">
                     <img
-                        src="https://erlinks.com/en/wp-content/uploads/2023/08/flat-for-rent.jpg"
+                        src="https://st4.depositphotos.com/16425882/22075/v/450/depositphotos_220753186-stock-illustration-buying-renting-new-house-keyring.jpg"
                         alt="Sign Up Illustration"
                     />
                 </div>
