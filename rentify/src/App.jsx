@@ -4,11 +4,13 @@ import './App.css';
 
 
 
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 import Login from "./pages/account/Login";
 import Register from "./pages/account/Register";
 import Home from "./pages/homepage/Dashboard"; // Updated path to match your structure
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import AdminDashboard from "./pages/private/AdminDashboard";
+import AdminUpdate from "./pages/private/AdminUpdate";
 
 // Import Navbar component
 
@@ -16,7 +18,7 @@ function App() {
   return (
     <Router>
       <ToastContainer />
-      <Navbar/>
+      <Navbar />
 
 
 
@@ -27,9 +29,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path='/admin/update/:id' element={<AdminUpdate />} />
+
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </Router>
   );
 }
