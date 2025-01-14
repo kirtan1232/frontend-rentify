@@ -1,62 +1,81 @@
 /* Page-level styles */
 .signup-page {
-    @apply min-h-screen flex items-center justify-center bg-gradient-to-b from-green-100 to-white px-5 relative;
-  }
-  
-  
-  /* Form container */
+  @apply min-h-screen flex items-center justify-center bg-gradient-to-b from-green-100 to-white px-5 relative;
+}
+
+/* Form container */
+.signup-container {
+  @apply flex max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden w-4/5;
+}
+
+/* Heading styles */
+.signup-heading {
+  @apply text-2xl font-serif font-semibold text-center mb-6;
+}
+
+/* Success message styles */
+.success-message {
+  @apply bg-green-100 text-green-800 p-3 rounded mb-4;
+}
+
+/* Error message styles */
+.error-message {
+  @apply bg-red-100 text-red-800 p-3 rounded mb-4;
+}
+
+/* Form group styles */
+.form-group {
+  @apply mb-4;
+}
+
+.form-group label {
+  @apply text-sm text-gray-600;
+}
+
+.form-group input {
+  @apply w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500;
+}
+
+/* Button styles */
+.submit-button {
+  @apply w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500;
+}
+
+/* Link styles */
+.link {
+  @apply text-blue-600 hover:underline;
+}
+
+/* Image container for sign-up illustration */
+/* Signup Image Container */
+/* Signup Image Container */
+.signup-image {
+  @apply flex-1 flex items-center justify-center; /* Centers the image */
+}
+
+/* Signup Image Styling */
+.signup-image img {
+  @apply w-full h-full object-cover rounded-lg shadow-md; /* Ensure the full image is visible */
+}
+
+
+
+/* Sign-up form container */
+.signup-form {
+  @apply flex-1 p-8 bg-gray-50;
+}
+
+/* Additional tweaks for responsiveness */
+@media (max-width: 768px) {
   .signup-container {
-    @apply flex max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden w-4/5;
+      @apply flex-col;
   }
-  
-  /* Heading styles */
-  .signup-heading {
-    @apply text-2xl font-serif font-semibold text-center mb-6;
-  }
-  
-  /* Success message styles */
-  .success-message {
-    @apply bg-green-100 text-green-800 p-3 rounded mb-4;
-  }
-  
-  /* Error message styles */
-  .error-message {
-    @apply bg-red-100 text-red-800 p-3 rounded mb-4;
-  }
-  
-  /* Form group styles */
-  .form-group {
-    @apply mb-4;
-  }
-  
-  .form-group label {
-    @apply text-sm text-gray-600;
-  }
-  
-  .form-group input {
-    @apply w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500;
-  }
-  
-  /* Button styles */
-  .submit-button {
-    @apply w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500;
-  }
-  
-  /* Link styles */
-  .link {
-    @apply text-blue-600 hover:underline;
-  }
-  
-  /* Image container for sign-up illustration */
+
   .signup-image {
-    @apply flex-1;
+      @apply mb-6; /* Add spacing for mobile layout */
   }
-  
-  .signup-image img {
-    @apply max-w-full h-auto object-cover rounded-lg shadow-md;
-  }
-  
-  /* Sign-up form container */
+
   .signup-form {
-    @apply flex-1 p-8 bg-gray-50;
+      @apply p-6;
   }
+}
