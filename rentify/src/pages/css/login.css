@@ -3,18 +3,23 @@
     @apply min-h-screen flex items-center justify-center bg-gradient-to-b from-green-100 to-white px-5 relative;
 }
 
-/* Logo container - Position the logo at the top-left */
-.logo-container {
-    @apply absolute top-5 left-5 z-10;
-}
-
-.logo {
-    @apply w-32 h-auto; /* Adjust logo size to be larger */
-}
-
 /* Form container */
 .login-container {
-    @apply bg-white bg-opacity-90 rounded-md p-8 shadow-lg max-w-md w-full;
+    @apply flex max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden w-4/5; /* Flex container for two sections */
+}
+
+/* Image container */
+.image-container {
+    @apply flex-1; /* Take up half the space */
+}
+
+.login-image {
+    @apply w-full h-full object-cover rounded-lg shadow-md; /* Cover the available space */
+}
+
+/* Login form */
+.login-form {
+    @apply flex-1 p-8 bg-gray-50; /* Take up half the space and style the form */
 }
 
 /* Heading styles */
@@ -42,11 +47,7 @@
     @apply text-indigo-600 hover:underline;
 }
 
-/* Image container for login illustration */
-.image-container {
-    @apply flex justify-center items-center mb-4;
-}
-
-.login-image {
-    @apply w-full h-auto rounded-lg shadow-md;
+/* Input field label styles */
+.label {
+    @apply block text-base font-medium text-gray-700; /* Increased to `text-base` */
 }
