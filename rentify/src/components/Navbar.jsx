@@ -9,8 +9,13 @@ const Navbar = () => {
     const dropdownRef = useRef(null);
     const isAuthenticated = localStorage.getItem("token");
 
+    // Retrieve and parse 'user' from localStorage
+    const user = JSON.parse(localStorage.getItem("user"));  // Add this line
+
     const logout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("isAdmin"); // Optionally clear the isAdmin value on logout
+        localStorage.removeItem("user"); // Optionally clear the user data on logout
         navigate("/login");
     };
 
@@ -117,7 +122,7 @@ const Navbar = () => {
                     </ul>
 
                     {/* Profile Section */}
-                    <div className="flex items-center gap-4 relative transform -translate-x-2">
+                    <div className="flex items-center gap-4 relative transform -translate-x-12"> {/* Adjusted this line */}
                         {isAuthenticated ? (
                             <>
                                 {/* Profile Icon */}
@@ -130,8 +135,12 @@ const Navbar = () => {
                                 {showDropdown && (
                                     <ul
                                         ref={dropdownRef}
-                                        className="absolute left-0 top-12 bg-white rounded-lg shadow-md w-48 text-gray-700 z-50"
+                                        className="absolute left-0 top-10 bg-white rounded-lg shadow-md w-40 text-gray-700 z-50" //move it to left  
                                     >
+                                        <li className="px-4 py-2 text-gray-700 font-bold">
+                                            {/* Display user name or any other info */}
+                                            {user ? `Hello, ${user.name}` : "Hello, User"}
+                                        </li>
                                         <li>
                                             <NavLink
                                                 to="/profile"
@@ -148,6 +157,17 @@ const Navbar = () => {
                                                 My Order
                                             </NavLink>
                                         </li>
+                                        {/* Admin check */}
+                                        {user && user.isAdmin && (
+                                            <li>
+                                                <NavLink
+                                                    to="/admin"
+                                                    className="block px-4 py-2 hover:bg-gray-100 font"
+                                                >
+                                                    Admin Dashboard
+                                                </NavLink>
+                                            </li>
+                                        )}
                                         <li>
                                             <button
                                                 onClick={logout}
