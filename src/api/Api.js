@@ -33,6 +33,8 @@ export const updateUser = (id, data) => api.put(`/api/user/update/${id}`, data, 
     }
 });
 
+
+
 // create product create api
 export const createProductApi = (data) => api.post('/api/product/create', data)
 
