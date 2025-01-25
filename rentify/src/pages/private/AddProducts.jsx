@@ -15,32 +15,57 @@ const AddProducts = ({ setProducts }) => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    setRoomImage(file);
-    setPreviewImage(URL.createObjectURL(file));
+    if (file) {
+      setRoomImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    } else {
+      setRoomImage(null);
+      setPreviewImage(null);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("roomImage", roomImage);
-    formData.append("roomDescription", roomDescription);
-    formData.append("floor", floor);
-    formData.append("address", address);
-    formData.append("rentPrice", rentPrice);
-    formData.append("parking", parking);
-    formData.append("contactNo", contactNo);
-    formData.append("bathroom", bathroom);
+    // Basic validation
+    if (!roomDescription || !floor || !address || !rentPrice || !contactNo) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
 
-    createProductApi(formData)
-      .then((res) => {
-        toast.success(res.data.message);
-        setProducts((prev) => [...prev, res.data.product]);
-        
-      })
-      .catch((error) =>
-        toast.error(error.response?.data?.message || "Error creating product.")
-      );
+    if (!roomImage) {
+      toast.error("Please upload a room image.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("roomImage", roomImage);
+      formData.append("roomDescription", roomDescription);
+      formData.append("floor", floor);
+      formData.append("address", address);
+      formData.append("rentPrice", rentPrice);
+      formData.append("parking", parking);
+      formData.append("contactNo", contactNo);
+      formData.append("bathroom", bathroom);
+
+      const response = await createProductApi(formData);
+      toast.success("Room added successfully!");
+      setProducts((prev) => [...prev, response.data.product]);
+
+      // Reset form fields
+      setRoomImage(null);
+      setPreviewImage(null);
+      setRoomDescription("");
+      setFloor("");
+      setAddress("");
+      setRentPrice("");
+      setParking(false);
+      setContactNo("");
+      setBathroom("");
+    } catch (error) {
+      toast.error("Error adding room.");
+    }
   };
 
   return (
