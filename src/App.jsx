@@ -9,7 +9,7 @@ import ResetPassword from "./pages/account/resetPassword.jsx";
 import Dashboard from "./pages/homepage/Dashboard"; // Updated path to match your structure
 import AdminDashboard from "./pages/private/AdminDashboard";
 import AdminUpdate from "./pages/private/AdminUpdate";
-import AddProducts from "./pages/private/AddProducts.jsx";
+import AddRooms from "./pages/private/AddRooms.jsx";
 
 function App() {
   // This should be replaced with actual authentication logic
@@ -24,7 +24,7 @@ function App() {
     { path: "/register", element: <Register /> },
     { path: "/adminDash", element: <AdminDashboard /> },
     { path: "/adminUpdate", element: <AdminUpdate /> },
-    { path: "/addProducts", element: <AddProducts /> },
+    { path: "/addRooms", element: <AddRooms /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
     { path: "/reset-password", element: <ResetPassword /> },
     { path: "*", element: <>Page not found</> },
