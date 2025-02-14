@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   };
   // Function to handle Add button click
   const goToAddProducts = () => {
-    navigate("/addProducts"); // Redirect to /addPrducts
+    navigate("/addRooms"); // Redirect to /addPrducts
   };
   // Function to handle Add button click
   const goToAdminUpdate = () => {
