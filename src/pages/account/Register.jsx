@@ -1,142 +1,171 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
-import { registerUserApi } from '../../api/Api'; // Import your API utility
-import '../css/signup.css'; // Import the custom CSS file
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import Navbar from "../../components/Navbar.jsx"; // Import Navbar
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const navigate = useNavigate(); // Initialize useNavigate
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
     });
+  };
 
-    const [errors, setErrors] = useState({});
+  const validateForm = () => {
+    // Check if all fields are filled
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast.error("All fields are required");
+      return false;
+    }
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.id]: e.target.value,
-        });
-    };
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return false;
+    }
 
-    const validateForm = () => {
-        const newErrors = {};
+    return true;
+  };
 
-        // Check if all fields are filled
-        Object.keys(formData).forEach((key) => {
-            if (!formData[key]) {
-                newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
-            }
-        });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Check if passwords match
-        if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
+    // Validate the form before submitting
+    if (validateForm()) {
+      try {
+        // Call the register API using axios with the new URL
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/register",
+          formData
+        );
+
+        if (response.data.success) {
+          toast.success("User registered successfully!"); // Show success toast
+          setFormData({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          });
+          navigate("/login"); // Redirect to login page after successful signup
         }
+      } catch (error) {
+        const errorMsg =
+          error.response?.data?.message || "Something went wrong!";
+        toast.error(errorMsg); // Show error toast (e.g., email already exists)
+      }
+    }
+  };
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // Validate the form before submitting
-        if (validateForm()) {
-            try {
-                // Call the register API
-                const response = await registerUserApi(formData);
-
-                if (response.data.success) {
-                    toast.success('User registered successfully!'); // Show success toast
-                    setFormData({
-                        name: '',
-                        email: '',
-                        password: '',
-                        confirmPassword: '',
-                    });
-                }
-            } catch (error) {
-                const errorMsg = error.response?.data?.message || 'Something went wrong!';
-                toast.error(errorMsg); // Show error toast
-            }
-        }
-    };
-
-    return (
-        <div className="signup-page">
-            {/* <div className="logo-container">
-                <img
-                    src={require('../../assets/icons/logo.png')} // Adjust the path based on your project structure
-                    alt="Rentify Logo"
-                    className="logo"
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-green-100 to-white relative">
+      {/* Fixed Navbar at the top */}
+      <Navbar />
+      <div className="pt-16 flex items-center justify-center px-5">
+        {" "}
+        {/* Add padding-top to push content below navbar */}
+        <div className="flex max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden w-5/6 md:w-3/4 h-auto">
+          {/* Increased width and auto height */}
+          <div className="flex-1 flex items-center justify-center">
+            <img
+              src="https://st4.depositphotos.com/16425882/22075/v/450/depositphotos_220753186-stock-illustration-buying-renting-new-house-keyring.jpg"
+              alt="Sign Up Illustration"
+              className="w-full h-full object-cover rounded-lg shadow-md"
+            />
+          </div>
+          <div className="flex-1 p-8 bg-gray-50">
+            <h3 className="text-2xl font-serif font-semibold text-center mb-6">
+              Create an account
+            </h3>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="name" className="text-sm text-gray-600">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500"
                 />
-            </div> */}
-            <div className="signup-container">
-                <div className="signup-image">
-                    <img
-                        src="https://st4.depositphotos.com/16425882/22075/v/450/depositphotos_220753186-stock-illustration-buying-renting-new-house-keyring.jpg"
-                        alt="Sign Up Illustration"
-                    />
-                </div>
-                <div className="signup-form">
-                    <h3 className="signup-heading">Create an account</h3>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                placeholder="Enter your name"
-                                value={formData.name}
-                                onChange={handleChange}
-                            />
-                            {errors.name && <div className="error-text">{errors.name}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                placeholder="Enter your email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                            {errors.email && <div className="error-text">{errors.email}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                placeholder="Enter your password"
-                                value={formData.password}
-                                onChange={handleChange}
-                            />
-                            {errors.password && <div className="error-text">{errors.password}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Re-type Password</label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Re-type password"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                            />
-                            {errors.confirmPassword && <div className="error-text">{errors.confirmPassword}</div>}
-                        </div>
-                        <button type="submit" className="submit-button">Create Account</button>
-                    </form>
-                    <p className="text-center">
-                        Already have an account? <a href="/login" className="link">Login</a>
-                    </p>
-                </div>
-            </div>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="text-sm text-gray-600">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="password" className="text-sm text-gray-600">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-sm text-gray-600"
+                >
+                  Re-type Password
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Re-type password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                Create Account
+              </button>
+            </form>
+            <p className="text-center mt-4">
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-600 hover:underline">
+                Login
+              </a>
+            </p>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Register;
