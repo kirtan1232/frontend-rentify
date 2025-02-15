@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import forgotBg from '../../assets/images/forgotbg.png'; // Import local image
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -39,10 +40,9 @@ const ResetPassword = () => {
         <div
             className="flex justify-center items-center min-h-screen bg-cover bg-center"
             style={{
-                backgroundImage:
-                    "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7YNWrJmA3gZm6O6hYxu3IwSupY77XYwrxqZLQIYSxNqiRMrY8J5EOpd_xInQGsmsqBqQ&usqp=CAU')",
+                backgroundImage: `url(${forgotBg})`, // Use the local image
                 backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed',
+                backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}
         >
