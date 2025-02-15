@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import Footer from "../../components/Footer.jsx"; // Ensure the path is correct
 import Navbar from "../../components/Navbar.jsx"; // Import Navbar
 
 const Register = () => {
@@ -164,6 +165,8 @@ const Register = () => {
           </div>
         </div>
       </div>
+        {/* Footer Section */}
+        <Footer />
     </div>
   );
 };
