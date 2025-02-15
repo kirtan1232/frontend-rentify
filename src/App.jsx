@@ -6,12 +6,15 @@ import ForgotPassword from "./pages/account/forgetPassword.jsx";
 import Login from "./pages/account/Login";
 import Register from "./pages/account/Register";
 import ResetPassword from "./pages/account/resetPassword.jsx";
+import AboutUs from "./pages/homepage/AboutUs.jsx";
+import ContactUs from "./pages/homepage/ContactUs.jsx";
 import Dashboard from "./pages/homepage/Dashboard.jsx"; // Updated path to match your structure
+import PrivacyPolicy from "./pages/homepage/PrivacyPolicy.jsx";
+import TermsCondition from "./pages/homepage/TermsCondition.jsx";
+import FAQ from "./pages/homepage/Faq.jsx";
+import AddRooms from "./pages/private/AddRooms.jsx";
 import AdminDashboard from "./pages/private/AdminDashboard.jsx";
 import AdminUpdate from "./pages/private/AdminUpdate.jsx";
-import AddRooms from "./pages/private/AddRooms.jsx";
-import AboutUs from "./pages/homepage/AboutUs.jsx"
-import ContactUs from "./pages/homepage/ContactUs.jsx"
 
 function App() {
   // This should be replaced with actual authentication logic
@@ -27,6 +30,9 @@ function App() {
     { path: "/adminDash", element: <AdminDashboard /> },
     { path: "/aboutus", element: <AboutUs /> },
     { path: "/contactus", element: <ContactUs /> },
+    { path: "/privacypolicy", element: <PrivacyPolicy /> },
+    { path: "/termscondition", element: <TermsCondition /> },
+    { path: "/faq", element: <FAQ /> },
     { path: "/adminUpdate", element: <AdminUpdate /> },
     { path: "/addRooms", element: <AddRooms /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
