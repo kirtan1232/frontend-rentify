@@ -1,5 +1,14 @@
+import {
+  FaEnvelope,
+  FaFileAlt,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaPhoneSquareAlt,
+  FaQuestionCircle,
+  FaShieldAlt,
+  FaUser,
+} from "react-icons/fa"; // Import Font Awesome icons
 import "tailwindcss/tailwind.css"; // Import Tailwind CSS
-// Import the logo image
 import parts from "../assets/icons/logo_white.png";
 
 const Footer = () => {
@@ -7,16 +16,23 @@ const Footer = () => {
     <footer className="bg-black text-white py-6 mt-6">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-          {/* Left Section with Contact Info */}
+          {/* Left Section with Icons */}
           <div className="flex flex-col justify-center items-start space-y-4">
-            {/* Contact Info Section */}
-            <div className="space-y-1">
-              <p className="text-sm font-bold">
-                Address: Lamatar, Lalitpur 44600
-              </p>
-              <p className="text-sm font-bold">Email: rentify20@gmail.com</p>
-              <p className="text-sm font-bold">Phone: +977-9862242899</p>
-              <p className="text-sm font-bold">Developer: Kirtan Shrestha</p>
+            <div className="flex items-center space-x-2">
+              <FaMapMarkerAlt className="w-5 h-5" /> {/* Address Icon */}
+              <p className="text-sm font-bold">Lamatar, Lalitpur 44600</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaEnvelope className="w-5 h-5" /> {/* Email Icon */}
+              <p className="text-sm font-bold">rentify20@gmail.com</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaPhoneAlt className="w-5 h-5" /> {/* Phone Icon */}
+              <p className="text-sm font-bold">+977-9862242899</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <FaUser className="w-5 h-5" /> {/* Developer Icon */}
+              <p className="text-sm font-bold">Kirtan Shrestha</p>
             </div>
           </div>
 
@@ -31,23 +47,26 @@ const Footer = () => {
           {/* Quick Links Section (Extreme Right) */}
           <div className="flex justify-end space-y-2">
             <ul className="list-none text-sm space-y-2">
-              <li>
+              <li className="flex items-center space-x-2">
+                <FaShieldAlt className="w-5 h-5" /> {/* Privacy Icon */}
                 <a
-                  href="/privacy"
+                  href="/privacypolicy"
                   className="text-white hover:text-gray-400 font-bold"
                 >
                   Privacy Policy
                 </a>
               </li>
-              <li>
+              <li className="flex items-center space-x-2">
+                <FaFileAlt className="w-5 h-5" /> {/* Terms Icon */}
                 <a
-                  href="/terms"
+                  href="/termscondition"
                   className="text-white hover:text-gray-400 font-bold"
                 >
                   Terms of Use
                 </a>
               </li>
-              <li>
+              <li className="flex items-center space-x-2">
+                <FaQuestionCircle className="w-5 h-5" /> {/* FAQ Icon */}
                 <a
                   href="/faq"
                   className="text-white hover:text-gray-400 font-bold"
@@ -55,9 +74,10 @@ const Footer = () => {
                   FAQ
                 </a>
               </li>
-              <li>
+              <li className="flex items-center space-x-2">
+                <FaPhoneSquareAlt className="w-5 h-5" /> {/* Contact Icon */}
                 <a
-                  href="/contact"
+                  href="/contactus"
                   className="text-white hover:text-gray-400 font-bold"
                 >
                   Contact
