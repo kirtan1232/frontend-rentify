@@ -31,13 +31,13 @@ const Navbar = () => {
           Home
         </Link>
         <Link
-          to="/about"
+          to="/aboutus"
           className="text-black text-lg font-bold hover:underline"
         >
           About
         </Link>
         <Link
-          to="/contact"
+          to="/contactus"
           className="text-black text-lg font-bold hover:underline"
         >
           Contact
