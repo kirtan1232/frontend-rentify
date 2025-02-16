@@ -1,244 +1,279 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import Footer from "../../components/Footer.jsx"; // Ensure the path is correct
+import { FaHome, FaPlus } from "react-icons/fa";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const AdminUpdate = () => {
-  const { id } = useParams(); // Get product ID from URL params
+  const { id } = useParams(); // Room ID from URL
   const navigate = useNavigate();
-   
+  const { state } = useLocation(); // State passed from the previous page
+  const { flat } = state || {}; // Current flat details
 
-  const [form, setForm] = useState({
-    roomImage: null,
-    previewImage: null,
+  const [formData, setFormData] = useState({
+    roomImage: "",
     roomDescription: "",
     floor: "",
-    rentPrice: "",
-    parking: "false",
-    contactNumber: "",
-    bathroom: "",
     address: "",
+    rentPrice: "",
+    parking: "",
+    contactNo: "",
+    bathroom: "",
   });
 
+  const [selectedImage, setSelectedImage] = useState(null); // For the selected image
+  const [loading, setLoading] = useState(true); // State to handle loading text
+
+  // Populate the form with existing data when the page loads
   useEffect(() => {
-    // Fetch product data by ID for editing
-    axios
-      .get(`http://localhost:5000/api/products/${id}`) // Replace with your actual endpoint
-      .then((res) => {
-        const productData = res.data.product;
-        setForm((prevForm) => ({
-          ...prevForm,
-          roomDescription: productData.roomDescription,
-          floor: productData.floor,
-          rentPrice: productData.rentPrice,
-          parking: productData.parking.toString(), // Ensure parking is a string
-          contactNumber: productData.contactNo,
-          bathroom: productData.bathroom,
-          address: productData.address,
-          previewImage: `http://localhost:5000/rooms/${productData.roomImage}`,
-        }));
-      })
-      .catch((error) =>
-        toast.error(
-          error.response?.data?.message || "Error fetching product data."
-        )
-      );
-  }, [id]);
+    if (flat) {
+      // Construct the full image URL if it's a relative path
+      const roomImage = flat.roomImage
+        ? `http://localhost:3000/${flat.roomImage}`
+        : "";
 
-  const handleInputChange = (e) => {
+      setFormData({
+        roomImage: roomImage, // Use the full URL
+        roomDescription: flat.roomDescription || "",
+        floor: flat.floor || "",
+        address: flat.address || "",
+        rentPrice: flat.rentPrice || "",
+        parking: flat.parking || "",
+        contactNo: flat.contactNo || "",
+        bathroom: flat.bathroom || "",
+      });
+      setLoading(false);
+    } else {
+      fetch(`http://localhost:3000/api/rooms/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Construct the full image URL if it's a relative path
+          const roomImage = data.roomImage
+            ? `http://localhost:3000/${data.roomImage}`
+            : "";
+
+          setFormData({
+            roomImage: roomImage, // Use the full URL
+            roomDescription: data.roomDescription || "",
+            floor: data.floor || "",
+            address: data.address || "",
+            rentPrice: data.rentPrice || "",
+            parking: data.parking || "",
+            contactNo: data.contactNo || "",
+            bathroom: data.bathroom || "",
+          });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching room details:", error);
+          setLoading(false);
+        });
+    }
+  }, [flat, id]);
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormImage = (event) => {
-    const file = event.target.files[0];
-    setForm({
-      ...form,
-      roomImage: file,
-      previewImage: URL.createObjectURL(file),
-    });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setFormData({ ...formData, roomImage: URL.createObjectURL(file) });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+    if (selectedImage) {
+      formDataToSend.append("roomImage", selectedImage);
+    }
 
-    const formData = new FormData();
-    formData.append("roomImage", form.roomImage);
-    formData.append("roomDescription", form.roomDescription);
-    formData.append("floor", form.floor);
-    formData.append("rentPrice", form.rentPrice);
-    formData.append("parking", form.parking);
-    formData.append("contactNo", form.contactNumber);
-    formData.append("bathroom", form.bathroom);
-    formData.append("address", form.address);
+    try {
+      const response = await fetch(`http://localhost:3000/api/rooms/${id}`, {
+        method: "PUT",
+        body: formDataToSend,
+      });
 
-    axios
-      .put(`http://localhost:5000/api/products/${id}`, formData) // Replace with actual update API
-      .then((res) => {
-        toast.success(res.data.message);
-        navigate("/admin"); // Navigate back to admin dashboard
-      })
-      .catch((error) =>
-        toast.error(error.response?.data?.message || "Error updating product.")
-      );
+      if (response.ok) {
+        alert("Room updated successfully");
+        navigate("/adminDash");
+      } else {
+        alert("Failed to update room");
+      }
+    } catch (error) {
+      console.error("Error updating room:", error);
+    }
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      {/* Sidebar/Menu Bar */}
-      <div className="w-64 bg-gray-800 text-white p-4 h-full flex flex-col justify-between">
-        <h2 className="text-2xl font-semibold mb-4">Admin Dashboard</h2>
-        <ul>
-          <li>
-            <a
-              href="/admin"
-              className="text-lg py-2 hover:bg-gray-700 block px-4"
-            >
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href="/admin/products"
-              className="text-lg py-2 hover:bg-gray-700 block px-4"
-            >
-              Manage Products
-            </a>
-          </li>
-          {/* Add more menu items here */}
-        </ul>
-        {/* Menu footer or any bottom content can go here */}
+    <div className="flex">
+      {/* Left Menu Bar */}
+      <div className="bg-gray-800 text-white w-64 p-6 flex flex-col justify-between min-h-screen">
+        <div>
+          <h2 className="text-2xl font-semibold mb-8 text-center">
+            Admin Dashboard
+          </h2>
+          <ul className="space-y-4 mt-4">
+            <li>
+              <button
+                onClick={() => navigate("/adminDash")}
+                className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 flex items-center"
+              >
+                <FaHome className="mr-2" /> Home
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/addRooms")}
+                className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 flex items-center"
+              >
+                <FaPlus className="mr-2" /> Add Rooms
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div className="flex justify-between mt-auto space-x-2">
+          <button
+            onClick={() => navigate("/")}
+            className="w-full text-left px-4 py-2 rounded-md bg-sky-500 hover:bg-sky-600 text-white font-bold"
+          >
+            Dashboard
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("isAdmin");
+              localStorage.removeItem("user");
+              navigate("/login");
+            }}
+            className="w-full text-left px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
-      {/* Room Details in the Frame */}
-      <div className="flex-1 p-8 bg-gray-100 overflow-auto">
-        <h2 className="text-2xl font-semibold mb-4 mt-2">Edit Room Details</h2>
-        <div className="bg-white p-6 rounded-lg shadow-lg h-full">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="flex items-center space-x-6">
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Room Image
-                </label>
+      {/* Update Room Form */}
+      <div className="flex-1 p-6 overflow-auto bg-gray-100">
+        <div className="border-4 border-gray-300 rounded-lg p-6 shadow-lg">
+          <h3 className="text-2xl font-semibold mb-6 text-center">
+            {loading ? "Loading Room Details..." : "Update Room Details"}
+          </h3>
+          {loading ? (
+            <div className="text-center text-gray-600">
+              Please wait while we load the room details...
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Room Image Upload */}
+              <div>
+                <label className="block text-gray-600">Room Image</label>
                 <input
                   type="file"
-                  className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  onChange={handleFormImage}
+                  name="roomImage"
+                  onChange={handleImageChange}
+                  className="w-full p-1 border rounded mt-1 text-sm"
                 />
-                {form.previewImage && (
+                {formData.roomImage && (
                   <img
-                    src={form.previewImage}
-                    alt="Preview"
-                    className="mt-4 max-w-full h-auto rounded-lg"
+                    src={formData.roomImage}
+                    alt="Room Preview"
+                    className="mt-2 w-32 h-32 object-cover rounded"
                   />
                 )}
               </div>
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Room Description
-                </label>
-                <textarea
-                  name="roomDescription"
-                  value={form.roomDescription}
-                  onChange={handleInputChange}
-                  className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Floor
-              </label>
-              <input
-                type="text"
-                name="floor"
-                value={form.floor}
-                onChange={handleInputChange}
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Rent Price
-              </label>
-              <input
-                type="number"
-                name="rentPrice"
-                value={form.rentPrice}
-                onChange={handleInputChange}
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Parking
-              </label>
-              <select
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                name="parking"
-                value={form.parking}
-                onChange={handleInputChange}
+              {/* Dynamic Form Fields */}
+              {Object.keys(formData)
+                .filter((key) => key !== "roomImage")
+                .map((key) => (
+                  <div key={key} className="flex flex-col space-y-2">
+                    <label className="text-gray-600">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}
+                    </label>
+                    {key === "rentPrice" ? (
+                      <input
+                        type="number"
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                      />
+                    ) : key === "contactNo" ? (
+                      <input
+                        type="tel"
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                        maxLength="10"
+                      />
+                    ) : key === "parking" ? (
+                      <select
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                      >
+                        <option value="">Select Parking</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
+                      </select>
+                    ) : key === "floor" ? (
+                      <select
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                      >
+                        <option value="">Select Floor</option>
+                        {[1, 2, 3, 4].map((floor) => (
+                          <option key={floor} value={floor}>
+                            {floor}
+                          </option>
+                        ))}
+                      </select>
+                    ) : key === "bathroom" ? (
+                      <select
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                      >
+                        <option value="">Select Bathroom</option>
+                        {[1, 2, 3].map((bathroom) => (
+                          <option key={bathroom} value={bathroom}>
+                            {bathroom}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        className="w-96 p-2 border rounded mt-1 text-sm"
+                      />
+                    )}
+                  </div>
+                ))}
+              <button
+                type="submit"
+                className="w-48 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition text-sm mx-auto block"
               >
-                <option value="true">Available</option>
-                <option value="false">Not Available</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contact Number
-              </label>
-              <input
-                type="text"
-                name="contactNumber"
-                value={form.contactNumber}
-                onChange={handleInputChange}
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Bathroom Count
-              </label>
-              <input
-                type="number"
-                name="bathroom"
-                value={form.bathroom}
-                onChange={handleInputChange}
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <input
-                type="text"
-                name="address"
-                value={form.address}
-                onChange={handleInputChange}
-                className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="mt-4 w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Edit Rooms
-            </button>
-          </form>
+                Update Room
+              </button>
+            </form>
+          )}
         </div>
       </div>
-      
     </div>
-    
   );
 };
 
