@@ -9,9 +9,10 @@ import ResetPassword from "./pages/account/resetPassword.jsx";
 import AboutUs from "./pages/homepage/AboutUs.jsx";
 import ContactUs from "./pages/homepage/ContactUs.jsx";
 import Dashboard from "./pages/homepage/Dashboard.jsx"; // Updated path to match your structure
+import FAQ from "./pages/homepage/Faq.jsx";
+import FlatDetails from "./pages/homepage/FlatDetails.jsx"; // Updated path to match your structure
 import PrivacyPolicy from "./pages/homepage/PrivacyPolicy.jsx";
 import TermsCondition from "./pages/homepage/TermsCondition.jsx";
-import FAQ from "./pages/homepage/Faq.jsx";
 import AddRooms from "./pages/private/AddRooms.jsx";
 import AdminDashboard from "./pages/private/AdminDashboard.jsx";
 import AdminUpdate from "./pages/private/AdminUpdate.jsx";
@@ -33,7 +34,8 @@ function App() {
     { path: "/privacypolicy", element: <PrivacyPolicy /> },
     { path: "/termscondition", element: <TermsCondition /> },
     { path: "/faq", element: <FAQ /> },
-    { path: "/adminUpdate", element: <AdminUpdate /> },
+    { path: "/flat-details/:id", element: <FlatDetails /> },
+    { path: "/adminUpdate/:id", element: <AdminUpdate /> },
     { path: "/addRooms", element: <AddRooms /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
     { path: "/reset-password", element: <ResetPassword /> },
