@@ -51,7 +51,7 @@ const Login = () => {
         <div className="login-container flex max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="image-container w-1/2 hidden md:block">
             <img
-              src="https://st4.depositphotos.com/16425882/22075/v/450/depositphotos_220753186-stock-illustration-buying-renting-new-house-keyring.jpg"
+              src="../../src/assets/images/right.gif"
               alt="Login Illustration"
               className="w-full h-full object-cover"
             />
