@@ -2,17 +2,21 @@ import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import SearchBar from "./components/Searchbar.jsx";
+import EditProfile from "./pages/account/editProfile.jsx";
 import ForgotPassword from "./pages/account/forgetPassword.jsx";
 import Login from "./pages/account/Login";
 import Register from "./pages/account/Register";
 import ResetPassword from "./pages/account/resetPassword.jsx";
 import AboutUs from "./pages/homepage/AboutUs.jsx";
+import Address from "./pages/homepage/Address.jsx";
 import ContactUs from "./pages/homepage/ContactUs.jsx";
 import Dashboard from "./pages/homepage/Dashboard.jsx"; // Updated path to match your structure
 import FAQ from "./pages/homepage/Faq.jsx";
 import FlatDetails from "./pages/homepage/FlatDetails.jsx"; // Updated path to match your structure
 import PrivacyPolicy from "./pages/homepage/PrivacyPolicy.jsx";
 import TermsCondition from "./pages/homepage/TermsCondition.jsx";
+import WishList from "./pages/homepage/Wishlist.jsx"; // Updated path to match your structure
 import AddRooms from "./pages/private/AddRooms.jsx";
 import AdminDashboard from "./pages/private/AdminDashboard.jsx";
 import AdminUpdate from "./pages/private/AdminUpdate.jsx";
@@ -26,15 +30,19 @@ function App() {
     { path: "/", element: <Dashboard /> },
     { path: "/navbar", element: <Navbar /> },
     { path: "/footer", element: <Footer /> },
+    { path: "/searchbar", element: <SearchBar /> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
+    { path: "/edit-profile", element: <EditProfile /> },
     { path: "/adminDash", element: <AdminDashboard /> },
     { path: "/aboutus", element: <AboutUs /> },
     { path: "/contactus", element: <ContactUs /> },
     { path: "/privacypolicy", element: <PrivacyPolicy /> },
     { path: "/termscondition", element: <TermsCondition /> },
+    { path: "/address/:location", element: <Address /> },
     { path: "/faq", element: <FAQ /> },
     { path: "/flat-details/:id", element: <FlatDetails /> },
+    { path: "/wishlist", element: <WishList /> },
     { path: "/adminUpdate/:id", element: <AdminUpdate /> },
     { path: "/addRooms", element: <AddRooms /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
