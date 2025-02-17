@@ -1,13 +1,16 @@
+// FlatDetails.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import Footer from "../../components/Footer.jsx";
 import Navbar from "../../components/Navbar.jsx";
+import Wishlist from "../homepage/Wishlist.jsx";
 
 const FlatDetails = () => {
   const { id } = useParams();
   const [flat, setFlat] = useState(null);
   const [similarFlats, setSimilarFlats] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/rooms/${id}`)
@@ -18,7 +21,7 @@ const FlatDetails = () => {
           .then((res) => res.json())
           .then((allFlats) => {
             const similar = allFlats
-              .filter(f => f._id !== data._id)
+              .filter((f) => f._id !== data._id)
               .sort(() => 0.5 - Math.random())
               .slice(0, 3);
             setSimilarFlats(similar);
@@ -26,6 +29,11 @@ const FlatDetails = () => {
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [id]);
+
+  useEffect(() => {
+    const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    setWishlist(storedWishlist);
+  }, []);
 
   if (!flat) {
     return <p className="text-center text-gray-600">Loading...</p>;
@@ -51,10 +59,11 @@ const FlatDetails = () => {
             </div>
 
             <div className="w-full md:w-1/2 bg-white border border-gray-200 rounded-lg shadow-md p-6">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                {flat.roomDescription}
-              </h3>
-              <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl font-semibold text-gray-800">{flat.roomDescription}</h3>
+                <Wishlist flatId={flat._id} onWishlistChange={setWishlist} />
+              </div>
+              <div className="space-y-3 mt-4">
                 <DetailItem label="Price" value={`₹${flat.rentPrice}/month`} />
                 <DetailItem label="Address" value={flat.address} />
                 <DetailItem label="Floor" value={flat.floor} />
