@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  FaCaretDown,
-  FaHeart,
-  FaSignOutAlt,
-  FaUser,
-  FaUserEdit,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaCaretDown, FaHeart, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
 import logo from "../assets/icons/logo.png";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate(); // Use useNavigate hook
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -32,8 +27,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
-    window.location.reload();
+    navigate('/'); // Redirect to home page
   };
 
   return (
@@ -49,25 +45,16 @@ const Navbar = () => {
         <Link to="/" className="text-black text-lg font-bold hover:underline">
           Home
         </Link>
-        <Link
-          to="/aboutus"
-          className="text-black text-lg font-bold hover:underline"
-        >
+        <Link to="/aboutus" className="text-black text-lg font-bold hover:underline">
           About
         </Link>
-        <Link
-          to="/contactus"
-          className="text-black text-lg font-bold hover:underline"
-        >
+        <Link to="/contactus" className="text-black text-lg font-bold hover:underline">
           Contact
         </Link>
 
         {/* Admin Dashboard Link (Only visible to admin users) */}
         {user?.role === "admin" && (
-          <Link
-            to="/admindash"
-            className="text-black text-lg font-bold hover:underline"
-          >
+          <Link to="/admindash" className="text-black text-lg font-bold hover:underline">
             Admin Dashboard
           </Link>
         )}
@@ -93,8 +80,8 @@ const Navbar = () => {
                 onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
               >
                 <Link
-                  to="/edit-profile" // Use user._id from state
-                  className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer block"
+                  to={`/edit-profile/${user.id}`}
+                  className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
                   onClick={() => setIsDropdownOpen(false)}
                 >
                   <FaUserEdit className="mr-2" />
@@ -102,7 +89,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/wishlist"
-                  className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer block"
+                  className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
                   onClick={() => setIsDropdownOpen(false)}
                 >
                   <FaHeart className="mr-2" />
@@ -110,7 +97,7 @@ const Navbar = () => {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left flex items-center px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer block"
+                  className="w-full text-left flex items-center px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
                 >
                   <FaSignOutAlt className="mr-2" />
                   Logout
