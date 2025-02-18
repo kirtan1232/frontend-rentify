@@ -39,7 +39,7 @@ const AdminDashboard = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   const goToDashboard = () => {
