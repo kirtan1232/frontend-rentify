@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [findRoomIndex, setFindRoomIndex] = useState(0);
   const [sastoFlatIndex, setSastoFlatIndex] = useState(0);
+  const [commercialFlatIndex, setCommercialFlatIndex] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/rooms")
@@ -46,6 +47,11 @@ const Dashboard = () => {
     if (sastoFlats.length <= 4) return sastoFlats;
     return sastoFlats.slice(sastoFlatIndex, sastoFlatIndex + 4);
   };
+  const getVisibleCommercialFlats = () => {
+    const commercialFlats = flats.filter((flat) => flat.rentPrice > 30000); // Filter flats with price < ₹10,000
+    if (commercialFlats.length <= 4) return commercialFlats;
+    return commercialFlats.slice(commercialFlatIndex, commercialFlatIndex + 4);
+  };
 
   const handleFindRoomNext = () => {
     setFindRoomIndex((prev) => (prev + 4) % flats.length);
@@ -66,6 +72,18 @@ const Dashboard = () => {
       (prev) => (prev - 4 + sastoFlats.length) % sastoFlats.length
     );
   };
+  const handleCommercialFlatPrev = () => {
+    const sastoFlats = flats.filter((flat) => flat.rentPrice > 30000);
+    setCommercialFlatIndex((prev) => (prev + 4) % sastoFlats.length);
+  };
+
+  const handleCommercialFlatNext = () => {
+    const sastoFlats = flats.filter((flat) => flat.rentPrice > 30000);
+    setCommercialFlatIndex(
+      (prev) => (prev - 4 + sastoFlats.length) % sastoFlats.length
+    );
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -85,7 +103,15 @@ const Dashboard = () => {
             <div className="flex-grow ml-6">
               <SearchBar flats={flats} />
             </div>
+            <div className="flex-shrink-0 flex-grow">
+              <img
+                src="../../src/assets/images/roompop.gif"
+                alt="Advertisement GIF"
+                className="w-full h-32 object-cover rounded-lg shadow-md"
+              />
+            </div>
           </div>
+          
 
           <h2 className="text-3xl font-bold text-gray-800 mb-6">
             Find by Address
@@ -318,6 +344,73 @@ const Dashboard = () => {
               ) : (
                 <p className="col-span-full text-center text-gray-600">
                   No Sasto Flats available.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Commerical Flat Frame */}
+      <div className="pt-20 px-6">
+        <div className="border-4 border-gray-200 rounded-lg p-6 shadow-lg relative overflow-hidden">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            Commercial Rooms
+          </h2>
+          <div className="relative">
+            {/* Navigation Arrows */}
+            {flats.filter((flat) => flat.rentPrice > 30000).length > 4 && (
+              <>
+                <button
+                  onClick={handleCommercialFlatPrev}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-red-500 text-white p-2 rounded-sm hover:bg-red-600 transform -translate-x-1/2"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={handleCommercialFlatNext}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-red-500 text-white p-2 rounded-sm hover:bg-red-600 transform translate-x-1/2"
+                >
+                  &rarr;
+                </button>
+              </>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {flats.length > 0 ? (
+                getVisibleCommercialFlats().map((flat, index) => (
+                  <div
+                    key={index}
+                    className="relative bg-white p-6 shadow-md rounded-lg group overflow-hidden"
+                  >
+                    {/* Rent Icon */}
+                    <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-3 py-1 rounded-full z-10 flex items-center">
+                      <span className="text-sm font-bold text-red-600">
+                        ₹{flat.rentPrice}/mo
+                      </span>
+                    </div>
+
+                    <img
+                      src={`http://localhost:3000/${flat.roomImage}`}
+                      alt="Room"
+                      className="w-full h-64 object-cover rounded-md mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-75"
+                    />
+                    <div className="transition-opacity duration-300 group-hover:opacity-75">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {flat.roomDescription}
+                      </h3>
+                      <p className="text-gray-600">Address: {flat.address}</p>
+                    </div>
+                    <Link
+                      to={`/flat-details/${flat._id}`}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lightBlue-500 text-white font-bold text-lg rounded-md py-2 px-4 hover:bg-lightBlue-600"
+                    >
+                      View
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-600">
+                  No Commercial Flats available.
                 </p>
               )}
             </div>
