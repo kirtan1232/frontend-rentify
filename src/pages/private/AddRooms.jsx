@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { FaEdit, FaHome } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify"; // Importing toastify
 import "react-toastify/dist/ReactToastify.css"; // Importing the Toastify styles
@@ -128,10 +128,10 @@ const AddRooms = () => {
             </li>
             <li>
               <button
-                onClick={() => navigate("/adminUpdate")}
+                onClick={() => navigate("/profile")}
                 className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 flex items-center"
               >
-                <FaEdit className="mr-2" /> Edit Rooms
+                <FaUser className="mr-2" /> Customer Details
               </button>
             </li>
           </ul>
