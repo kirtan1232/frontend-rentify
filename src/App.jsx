@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+
 import SearchBar from "./components/Searchbar.jsx";
 import EditProfile from "./pages/account/editProfile.jsx";
 import ForgotPassword from "./pages/account/forgetPassword.jsx";
@@ -33,7 +34,7 @@ function App() {
     { path: "/searchbar", element: <SearchBar /> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
-    { path: "/edit-profile", element: <EditProfile /> },
+    { path: "/edit-profile/:userId", element: <EditProfile /> },
     { path: "/adminDash", element: <AdminDashboard /> },
     { path: "/aboutus", element: <AboutUs /> },
     { path: "/contactus", element: <ContactUs /> },
