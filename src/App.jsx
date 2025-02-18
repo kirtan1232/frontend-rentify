@@ -21,6 +21,8 @@ import WishList from "./pages/homepage/Wishlist.jsx"; // Updated path to match y
 import AddRooms from "./pages/private/AddRooms.jsx";
 import AdminDashboard from "./pages/private/AdminDashboard.jsx";
 import AdminUpdate from "./pages/private/AdminUpdate.jsx";
+import Profile from "./pages/private/Profile.jsx";
+import EditUser from "./pages/private/EditUser.jsx";
 
 function App() {
   // This should be replaced with actual authentication logic
@@ -46,6 +48,8 @@ function App() {
     { path: "/wishlist", element: <WishList /> },
     { path: "/adminUpdate/:id", element: <AdminUpdate /> },
     { path: "/addRooms", element: <AddRooms /> },
+    { path: "/profile", element: <Profile /> },
+    { path: "/edit-user/:id", element: <EditUser /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
     { path: "/reset-password", element: <ResetPassword /> },
     { path: "*", element: <>Page not found</> },
