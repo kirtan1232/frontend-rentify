@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaHome, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 
@@ -50,6 +51,10 @@ const AdminDashboard = () => {
     navigate("/addRooms");
   };
 
+  const goToProfile = () => {
+    navigate("/profile");
+  };
+
   return (
     <div className="flex h-screen">
       <div className="bg-gray-800 text-white w-64 p-6 flex flex-col justify-between">
@@ -61,21 +66,20 @@ const AdminDashboard = () => {
             <li>
               <button
                 onClick={() => setActiveMenu("manageFlats")}
-                className={`w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 ${
+                className={`w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 flex items-center ${
                   activeMenu === "manageFlats" ? "bg-gray-700" : ""
                 }`}
               >
-                Manage Flats
+                <FaHome className="mr-2" /> Manage Flats
               </button>
             </li>
+
             <li>
               <button
-                onClick={() => setActiveMenu("bookings")}
-                className={`w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 ${
-                  activeMenu === "bookings" ? "bg-gray-700" : ""
-                }`}
+                onClick={() => navigate("/profile")}
+                className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-700 flex items-center"
               >
-                Bookings
+                <FaUser className="mr-2" /> Customer Details
               </button>
             </li>
           </ul>
