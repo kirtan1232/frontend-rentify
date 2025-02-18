@@ -1,4 +1,3 @@
-// Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
@@ -193,119 +192,137 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      <h2 className="text-3xl font-bold text-gray-800 mt-12 mb-6">Find Room</h2>
+
       {/* Find Room Frame */}
-
-      <div className="border-4 border-gray-200 rounded-lg p-6 shadow-lg relative overflow-hidden">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {flats.length > 0 ? (
-            getVisibleFindRoomFlats().map((flat, index) => (
-              <div
-                key={index}
-                className="relative bg-white p-6 shadow-md rounded-lg group overflow-hidden"
-              >
-                <img
-                  src={`http://localhost:3000/${flat.roomImage}`}
-                  alt="Room"
-                  className="w-full h-64 object-cover rounded-md mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-75"
-                />
-                <div className="transition-opacity duration-300 group-hover:opacity-75">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {flat.roomDescription}
-                  </h3>
-                  <p className="text-gray-600">Price: ₹{flat.rentPrice}</p>
-                  <p className="text-gray-600">Address: {flat.address}</p>
-                </div>
-                <Link
-                  to={`/flat-details/${flat._id}`}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lightBlue-500 text-white font-bold text-lg rounded-md py-2 px-4 hover:bg-lightBlue-600"
+      <div className="pt-20 px-6">
+        <div className="border-4 border-gray-200 rounded-lg p-6 shadow-lg relative overflow-hidden">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Find Room</h2>
+          <div className="relative">
+            {/* Navigation Arrows */}
+            {flats.length > 4 && (
+              <>
+                <button
+                  onClick={handleFindRoomPrev}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-blue-500 text-white p-2 rounded-sm hover:bg-blue-600 transform -translate-x-1/2"
                 >
-                  View
-                </Link>
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-600">
-              No rooms available.
-            </p>
-          )}
-        </div>
+                  &larr;
+                </button>
+                <button
+                  onClick={handleFindRoomNext}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-blue-500 text-white p-2 rounded-sm hover:bg-blue-600 transform translate-x-1/2"
+                >
+                  &rarr;
+                </button>
+              </>
+            )}
 
-        {/* Navigation Buttons */}
-        {flats.length > 4 && (
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handleFindRoomPrev}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-            >
-              &larr; Previous
-            </button>
-            <button
-              onClick={handleFindRoomNext}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Next &rarr;
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {flats.length > 0 ? (
+                getVisibleFindRoomFlats().map((flat, index) => (
+                  <div
+                    key={index}
+                    className="relative bg-white p-6 shadow-md rounded-lg group overflow-hidden"
+                  >
+                    {/* Rent Icon */}
+                    <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-3 py-1 rounded-full z-10 flex items-center">
+                      <span className="text-sm font-bold text-blue-600">
+                        ₹{flat.rentPrice}/mo
+                      </span>
+                    </div>
+
+                    <img
+                      src={`http://localhost:3000/${flat.roomImage}`}
+                      alt="Room"
+                      className="w-full h-64 object-cover rounded-md mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-75"
+                    />
+                    <div className="transition-opacity duration-300 group-hover:opacity-75">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {flat.roomDescription}
+                      </h3>
+                      <p className="text-gray-600">Address: {flat.address}</p>
+                    </div>
+                    <Link
+                      to={`/flat-details/${flat._id}`}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lightBlue-500 text-white font-bold text-lg rounded-md py-2 px-4 hover:bg-lightBlue-600"
+                    >
+                      View
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-600">
+                  No rooms available.
+                </p>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Sasto Flat Frame */}
-      <h2 className="text-3xl font-bold text-gray-800 mt-12 mb-6">
-        Sasto Flat
-      </h2>
-      <div className="border-4 border-gray-200 rounded-lg p-6 shadow-lg relative overflow-hidden">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {flats.length > 0 ? (
-            getVisibleSastoFlats().map((flat, index) => (
-              <div
-                key={index}
-                className="relative bg-white p-6 shadow-md rounded-lg group overflow-hidden"
-              >
-                <img
-                  src={`http://localhost:3000/${flat.roomImage}`}
-                  alt="Room"
-                  className="w-full h-64 object-cover rounded-md mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-75"
-                />
-                <div className="transition-opacity duration-300 group-hover:opacity-75">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {flat.roomDescription}
-                  </h3>
-                  <p className="text-gray-600">Price: ₹{flat.rentPrice}</p>
-                  <p className="text-gray-600">Address: {flat.address}</p>
-                </div>
-                <Link
-                  to={`/flat-details/${flat._id}`}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lightBlue-500 text-white font-bold text-lg rounded-md py-2 px-4 hover:bg-lightBlue-600"
+      <div className="pt-20 px-6">
+        <div className="border-4 border-gray-200 rounded-lg p-6 shadow-lg relative overflow-hidden">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Sasto Flat</h2>
+          <div className="relative">
+            {/* Navigation Arrows */}
+            {flats.filter((flat) => flat.rentPrice < 10000).length > 4 && (
+              <>
+                <button
+                  onClick={handleSastoFlatPrev}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-sm hover:bg-green-600 transform -translate-x-1/2"
                 >
-                  View
-                </Link>
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-600">
-              No Sasto Flats available.
-            </p>
-          )}
-        </div>
+                  &larr;
+                </button>
+                <button
+                  onClick={handleSastoFlatNext}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-sm hover:bg-green-600 transform translate-x-1/2"
+                >
+                  &rarr;
+                </button>
+              </>
+            )}
 
-        {/* Navigation Buttons */}
-        {flats.filter((flat) => flat.rentPrice < 10000).length > 4 && (
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handleSastoFlatPrev}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-            >
-              &larr; Previous
-            </button>
-            <button
-              onClick={handleSastoFlatNext}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Next &rarr;
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {flats.length > 0 ? (
+                getVisibleSastoFlats().map((flat, index) => (
+                  <div
+                    key={index}
+                    className="relative bg-white p-6 shadow-md rounded-lg group overflow-hidden"
+                  >
+                    {/* Rent Icon */}
+                    <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-3 py-1 rounded-full z-10 flex items-center">
+                      <span className="text-sm font-bold text-green-600">
+                        ₹{flat.rentPrice}/mo
+                      </span>
+                    </div>
+
+                    <img
+                      src={`http://localhost:3000/${flat.roomImage}`}
+                      alt="Room"
+                      className="w-full h-64 object-cover rounded-md mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-75"
+                    />
+                    <div className="transition-opacity duration-300 group-hover:opacity-75">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {flat.roomDescription}
+                      </h3>
+                      <p className="text-gray-600">Address: {flat.address}</p>
+                    </div>
+                    <Link
+                      to={`/flat-details/${flat._id}`}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lightBlue-500 text-white font-bold text-lg rounded-md py-2 px-4 hover:bg-lightBlue-600"
+                    >
+                      View
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-600">
+                  No Sasto Flats available.
+                </p>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Sponsor GIF Section */}
