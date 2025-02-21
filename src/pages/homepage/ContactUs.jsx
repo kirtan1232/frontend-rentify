@@ -6,6 +6,16 @@ import Navbar from "../../components/Navbar.jsx";
 const ContactUs = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    location: "",
+    rentalType: "",
+    area: "",
+    message: "",
+  });
+  const [status, setStatus] = useState(null); // For success/error messages
 
   // Check if user is logged in
   useEffect(() => {
@@ -15,10 +25,46 @@ const ContactUs = () => {
     }
   }, []);
 
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus("Message sent successfully!");
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          rentalType: "",
+          area: "",
+          message: "",
+        });
+      } else {
+        setStatus("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      setStatus("Error: Could not send message.");
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <Navbar user={user} /> {/* Passing user to Navbar */}
-      {/* Contact Section */}
       <section className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left Side - Message Box */}
@@ -42,8 +88,6 @@ const ContactUs = () => {
               looking for a rental property or need help listing your home, our
               team is here to support you.
             </p>
-
-            {/* Show Login Button only if user is NOT logged in */}
             {!user && (
               <button
                 onClick={() => navigate("/login")}
@@ -61,17 +105,24 @@ const ContactUs = () => {
               <span className="text-orange-500"> Let us know</span>
             </h2>
 
-            <form
-              className="mt-4 space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate("/"); // Redirect to dashboard on submit
-              }}
-            >
+            {status && (
+              <p
+                className={`mt-2 ${
+                  status.includes("success") ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {status}
+              </p>
+            )}
+
+            <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-gray-700">Your Full Name *</label>
                 <input
                   type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Type your name..."
                   className="w-full p-2 border rounded-md"
                   required
@@ -84,6 +135,9 @@ const ContactUs = () => {
                 </label>
                 <input
                   type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="Type your phone number..."
                   className="w-full p-2 border rounded-md"
                   required
@@ -94,6 +148,9 @@ const ContactUs = () => {
                 <label className="block text-gray-700">Email</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter Your Email"
                   className="w-full p-2 border rounded-md"
                 />
@@ -103,6 +160,9 @@ const ContactUs = () => {
                 <label className="block text-gray-700">Location *</label>
                 <input
                   type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
                   placeholder="Select or search your location"
                   className="w-full p-2 border rounded-md"
                   required
@@ -113,6 +173,9 @@ const ContactUs = () => {
                 <label className="block text-gray-700">Rental Type *</label>
                 <input
                   type="text"
+                  name="rentalType"
+                  value={formData.rentalType}
+                  onChange={handleChange}
                   placeholder="Select or type"
                   className="w-full p-2 border rounded-md"
                   required
@@ -123,6 +186,9 @@ const ContactUs = () => {
                 <label className="block text-gray-700">Tole/Area *</label>
                 <input
                   type="text"
+                  name="area"
+                  value={formData.area}
+                  onChange={handleChange}
                   placeholder="e.g., Samakhushi"
                   className="w-full p-2 border rounded-md"
                   required
@@ -132,6 +198,9 @@ const ContactUs = () => {
               <div>
                 <label className="block text-gray-700">If Any</label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Write a message"
                   className="w-full p-2 border rounded-md"
                 ></textarea>
