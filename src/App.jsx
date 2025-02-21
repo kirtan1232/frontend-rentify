@@ -36,7 +36,7 @@ function App() {
     { path: "/searchbar", element: <SearchBar /> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
-    { path: "/edit-profile/:userId", element: <EditProfile /> },
+    { path: "/edit-profile/:id", element: <EditProfile /> },
     { path: "/adminDash", element: <AdminDashboard /> },
     { path: "/aboutus", element: <AboutUs /> },
     { path: "/contactus", element: <ContactUs /> },
