@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../../components/Footer.jsx"; // Ensure the path is correct
-import Navbar from "/src/components/Navbar.jsx";
+import Footer from "../../components/Footer"; // Ensure the path is correct
+import Navbar from "../../components/Navbar"; // Ensure the path is correct
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,17 +25,21 @@ const Login = () => {
         { email, password }
       );
 
-      const { token, name, role } = response.data;
+      const { token, name, role, _id } = response.data;
 
-      // Store user details in localStorage
+      // Store user details and userId in localStorage
       localStorage.setItem("user", JSON.stringify({ token, name, role }));
+      localStorage.setItem("userId", _id); // Store the userId
+
+      // Log the stored values for debugging
+      console.log("Stored user:", localStorage.getItem("user"));
+      console.log("Stored userId:", localStorage.getItem("userId"));
 
       // Display the success toast message
       toast.success(`Welcome back, ${name}!`);
 
-      // Redirect to home page, where navbar will show the admin dashboard link if applicable
+      // Redirect to home page
       navigate("/");
-      window.location.reload(); // Reload page to reflect changes in Navbar
     } catch (error) {
       const errorMsg =
         error.response?.data?.message || "Login failed. Please try again.";
@@ -56,7 +60,7 @@ const Login = () => {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="form-container w-full md:w-1/2 p-8">
+          <div className="form w-container-full md:w-1/2 p-8">
             <h3 className="text-3xl font-bold text-center text-gray-700 mb-6">
               Welcome Back
             </h3>
@@ -118,8 +122,8 @@ const Login = () => {
           </div>
         </div>
       </div>
-        {/* Footer Section */}
-        <Footer />
+      {/* Footer Section */}
+      <Footer />
     </div>
   );
 };
