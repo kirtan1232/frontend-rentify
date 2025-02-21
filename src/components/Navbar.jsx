@@ -1,6 +1,7 @@
+// Navbar.jsx
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { FaCaretDown, FaHeart, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
 
 const Navbar = () => {
@@ -13,23 +14,14 @@ const Navbar = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-
-    // Close dropdown when clicking outside
-    const handleClickOutside = (e) => {
-      if (!e.target.closest(".user-menu")) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setUser(null);
-    navigate('/'); // Redirect to home page
+    navigate("/");
   };
 
   return (
@@ -52,7 +44,6 @@ const Navbar = () => {
           Contact
         </Link>
 
-        {/* Admin Dashboard Link (Only visible to admin users) */}
         {user?.role === "admin" && (
           <Link to="/admindash" className="text-black text-lg font-bold hover:underline">
             Admin Dashboard
@@ -61,7 +52,6 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Login/Logout Buttons */}
         {user ? (
           <div className="relative user-menu">
             <button
@@ -77,10 +67,10 @@ const Navbar = () => {
             {isDropdownOpen && (
               <div
                 className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 border z-50"
-                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+                onClick={(e) => e.stopPropagation()}
               >
                 <Link
-                  to={`/edit-profile/${user.id}`}
+                  to={`/edit-profile/${user._id}`}
                   className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
                   onClick={() => setIsDropdownOpen(false)}
                 >
