@@ -125,7 +125,7 @@ const EditUser = () => {
 <div className="flex-1 flex justify-center items-center p-6 overflow-auto bg-gray-100 relative">
   {/* Edit User Frame */}
   <div className="w-96 h-96 border-4 border-gray-300 rounded-lg p-6 shadow-lg flex flex-col justify-center items-center z-10 bg-cyan-800">
-    <h2 className="text-2xl font-semibold mb-6">Edit User</h2>
+    <h2  className="text-2xl font-semibold mb-6">Edit User</h2>
     <form onSubmit={handleSubmit} className="space-y-4 w-full">
       <div>
         <label className="block text-gray-600">Name</label>
