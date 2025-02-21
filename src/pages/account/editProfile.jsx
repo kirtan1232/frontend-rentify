@@ -1,168 +1,126 @@
-// src/components/EditProfile.jsx
-import axios from "axios";
+// EditProfile.jsx
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EditProfile = () => {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const userId = storedUser?.id; // Get user ID from local storage
-  const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const token = JSON.parse(localStorage.getItem("user"))?.token;
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/user/${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setUser(response.data.user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setError("Failed to fetch user data");
-      }
+                if (!token) {
+                    console.error("No token found in localStorage");
+                    navigate("/login"); // Redirect to login if no token exists
+                    return;
+                }
+
+                const response = await axios.get(
+                    `http://localhost:3000/api/edit/customer/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (response.data && response.data.user) {
+                    setUser(response.data.user); // Assuming the response contains user data
+                } else {
+                    console.error("User data not found in response");
+                    toast.error("User data not found");
+                }
+            } catch (error) {
+                console.error("Error fetching profile:", error);
+                toast.error("Error fetching profile");
+            }
+        };
+
+        fetchUserProfile();
+    }, [id]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
 
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId, token]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const token = JSON.parse(localStorage.getItem("user"))?.token;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
+            if (!token) {
+                console.error("No token found in localStorage");
+                navigate("/login");
+                return;
+            }
 
-  // src/components/EditProfile.jsx
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+            const response = await axios.put(
+                `http://localhost:3000/api/edit/update/${id}`,
+                user,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-    if (user.password !== user.confirmPassword) {
-      setError("Passwords do not match");
-      setSuccess("");
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `http://localhost:3000/api/user/update/${userId}`,
-        {
-          name: user.name,
-          email: user.email,
-          password: user.password,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+            if (response.status === 200) {
+                toast.success('Profile updated successfully');
+                navigate("/profile");
+            } else {
+                toast.error('Failed to update profile');
+            }
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            toast.error('Error updating profile');
         }
-      );
+    };
 
-      setSuccess("Profile updated successfully");
-      setError("");
-    } catch (error) {
-      console.error("Error updating user:", error);
-      setError("Failed to update user");
-      setSuccess("");
+    if (!user) {
+        return <div>Loading...</div>;
     }
-  };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
-        {success && (
-          <p className="text-green-500 text-center mb-4">{success}</p>
-        )}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={user.name}
-              onChange={handleChange}
-              required
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              required
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={user.password}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={user.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Update Profile
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+    return (
+        <div>
+            <h2>Edit Profile</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={user.name}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={user.email}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={user.password || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+    );
 };
 
 export default EditProfile;
