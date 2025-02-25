@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import Footer from "../../components/Footer.jsx";
 import Navbar from "../../components/Navbar.jsx";
-import SearchBar from "../../components/Searchbar.jsx"; // Import the SearchBar component
+import SearchBar from "../../components/Searchbar.jsx";
+import { FaWhatsapp } from "react-icons/fa"; // Import the SearchBar component
 
 const Dashboard = () => {
   const [flats, setFlats] = useState([]);
@@ -83,7 +84,6 @@ const Dashboard = () => {
       (prev) => (prev - 4 + sastoFlats.length) % sastoFlats.length
     );
   };
-
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -445,7 +445,15 @@ const Dashboard = () => {
           />
         </div>
       </div>
-
+      {/* WhatsApp Floating Button */}
+      <a
+        href="https://wa.me/9862242899"
+        className="fixed bottom-4 right-4 bg-green-500 hover:bg-green-700 text-white rounded-full p-3 shadow-lg z-50"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaWhatsapp className="w-12 h-12" />
+      </a>
       <Footer />
     </div>
   );
