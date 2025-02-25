@@ -1,6 +1,6 @@
 // Navbar.jsx
 import { useEffect, useState } from "react";
-import { FaCaretDown, FaHeart, FaSignOutAlt, FaUser, FaUserEdit } from "react-icons/fa";
+import { FaCaretDown, FaHeart, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
 
@@ -45,7 +45,10 @@ const Navbar = () => {
         </Link>
 
         {user?.role === "admin" && (
-          <Link to="/admindash" className="text-black text-lg font-bold hover:underline">
+          <Link
+            to="/admindash"
+            className="text-black text-lg font-bold hover:underline"
+          >
             Admin Dashboard
           </Link>
         )}
@@ -69,14 +72,6 @@ const Navbar = () => {
                 className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 border z-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Link
-                  to={`/edit-profile/${user._id}`}
-                  className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  <FaUserEdit className="mr-2" />
-                  Edit Profile
-                </Link>
                 <Link
                   to="/wishlist"
                   className="flex items-center w-full px-4 py-2 text-black font-bold hover:bg-gray-100 cursor-pointer"
