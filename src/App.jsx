@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-
 import SearchBar from "./components/Searchbar.jsx";
 import EditProfile from "./pages/account/editProfile.jsx";
 import ForgotPassword from "./pages/account/forgetPassword.jsx";
@@ -18,11 +17,13 @@ import FlatDetails from "./pages/homepage/FlatDetails.jsx"; // Updated path to m
 import PrivacyPolicy from "./pages/homepage/PrivacyPolicy.jsx";
 import TermsCondition from "./pages/homepage/TermsCondition.jsx";
 import WishList from "./pages/homepage/Wishlist.jsx"; // Updated path to match your structure
+import Failure from "./pages/payment/Failure.jsx";
+import Success from "./pages/payment/Success.jsx";
 import AddRooms from "./pages/private/AddRooms.jsx";
 import AdminDashboard from "./pages/private/AdminDashboard.jsx";
 import AdminUpdate from "./pages/private/AdminUpdate.jsx";
-import Profile from "./pages/private/Profile.jsx";
 import EditUser from "./pages/private/EditUser.jsx";
+import Profile from "./pages/private/Profile.jsx";
 
 function App() {
   // This should be replaced with actual authentication logic
@@ -52,6 +53,8 @@ function App() {
     { path: "/edit-user/:id", element: <EditUser /> },
     { path: "/forgot-password", element: <ForgotPassword /> },
     { path: "/reset-password", element: <ResetPassword /> },
+    { path: "/success", element: <Success /> },
+    { path: "/failure", element: <Failure /> },
     { path: "*", element: <>Page not found</> },
   ];
 
