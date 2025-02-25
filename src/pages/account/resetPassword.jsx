@@ -76,12 +76,12 @@ const ResetPassword = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                         {loading ? 'Resetting...' : 'Reset Password'}
                     </button>
                 </form>
-                {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+                {message && <p className="mt-4 text-center text-green-500 font-semibold">{message}</p>}
             </div>
         </div>
     );
