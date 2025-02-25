@@ -90,25 +90,25 @@ const FlatDetails = () => {
             </style>
           </head>
           <body>
-            <div class="container" >
+            <div class="container"  >
              <div class="header" style="background-color: orange; padding: 10px; text-align: center;">
               <h1 style="color: white;">Rentify</h1>
                 </div>
-              <div class="content">
-                <h2>User Message:</h2>
-                <p>${message}</p>
-                <h3>Flat Details:</h3>
-                <p><strong>Room Description:</strong> ${flat.roomDescription}</p>
-                <p><strong>Floor:</strong> ${flat.floor}</p>
-                <p><strong>Address:</strong> ${flat.address}</p>
-                <p><strong>Rent Price:</strong> ₹${flat.rentPrice}/month</p>
-                <p><strong>Parking:</strong> ${flat.parking}</p>
-                <p><strong>Contact No:</strong> ${flat.contactNo}</p>
-                <p><strong>Bathrooms:</strong> ${flat.bathroom}</p>
+                 <div class="content">
+                <h2><strong>User Message:</strong></h2>
+                <p><strong>${message}</strong></p>
+                <h3><strong>Flat Details:</strong></h3>
+                <p><strong>Room Description:</strong> <strong>${flat.roomDescription}</strong></p>
+                <p><strong>Floor:</strong> <strong>${flat.floor}</strong></p>
+               <p><strong>Address:</strong> <strong>${flat.address}</strong></p>
+                <p><strong>Rent Price:</strong> <strong>₹${flat.rentPrice}/month</strong></p>
+                <p><strong>Parking:</strong> <strong>${flat.parking}</strong></p>
+                <p><strong>Contact No:</strong> <strong>${flat.contactNo}</strong></p>
+                <p><strong>Bathrooms:</strong> <strong>${flat.bathroom}</strong></p>
                 <img class="image" src="http://localhost:3000/${flat.roomImage}" alt="Room Image">
-              </div>
+                </div>
               <div class="footer">
-                <p>&copy; 2025 Rentify</p>
+                <p>&copy; 2025 Rentify-Kirtan Shrestha</p>
               </div>
             </div>
           </body>
@@ -137,6 +137,61 @@ const FlatDetails = () => {
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handlePayment = async (payment_method) => {
+    const url = `http://localhost:3000/api/esewa/create/${id}`;
+    const data = {
+      amount: flat.rentPrice, // Use the actual rent price
+      products: [
+        { product: flat.roomDescription, amount: flat.rentPrice, quantity: 1 }, // Use flat details
+      ],
+      payment_method,
+    };
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any other headers as needed
+        },
+        body: JSON.stringify(data),
+      });
+      // Check if the request was successful (status code 2xx)
+      if (response.ok) {
+        const responseData = await response.json();
+        esewaCall(responseData.formData);
+
+        // if (responseData.payment_method === "esewa") {
+        // } else if (responseData.payment_method === "khalti") {
+        //   khaltiCall(responseData.data);
+        // }
+      } else {
+        console.error("Failed to fetch:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
+
+  const esewaCall = (formData) => {
+    console.log(formData);
+    var path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
+
+    for (var key in formData) {
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", formData[key]);
+      form.appendChild(hiddenField);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
   };
 
   if (!flat) {
@@ -178,9 +233,15 @@ const FlatDetails = () => {
                 <DetailItem label="Bathrooms" value={flat.bathroom} />
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200"
+                  className="mt-4 w-72  bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 "
                 >
                   Ask Anything About This Room/Flat
+                </button>
+                <button
+                  onClick={() => handlePayment("esewa")}
+                  className="mt-4 w-64 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-200"
+                >
+                  Rent Now with eSewa
                 </button>
               </div>
             </div>
